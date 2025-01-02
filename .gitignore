@@ -1,0 +1,14 @@
+# gitignore file
+# MacOS
+.DS_Store
+
+# VSCode
+.vscode
+
+# Vagrant
+.vagrant
+
+# IntelliJ
+.idea
+
+
