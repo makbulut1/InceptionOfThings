@@ -1,9 +1,4 @@
 Vagrant.configure("2") do |config|
-  
-  # Sync klasörü tanımlıyoruz
-  config.vm.synced_folder "./confs", "/vagrant/sync", type: "virtualbox"
-
-  # Master node (makS)
   config.vm.define "makS" do |makS|
     makS.vm.box = "debian/bookworm64"
     makS.vm.network "private_network", ip: "192.168.56.110"
@@ -12,16 +7,21 @@ Vagrant.configure("2") do |config|
       vb.cpus = 1
       vb.memory = "1024"
     end
-    
-#    makS.vm.boot_timeout = 600
-
-    # Master node provision (K3s Master kurulumu)
     makS.vm.provision "shell", inline: <<-SHELL
-	bash /vagrant/scripts/k3s-install.sh
+    bashrc_file="/home/vagrant/.bashrc"
+    apt update
+    apt install curl -y
+    apt install net-tools -y
+
+    export INSTALL_K3S_EXEC="--write-kubeconfig-mode 644 --bind-address=192.168.56.110 --advertise-address=192.168.56.110 --node-ip=192.168.56.110"
+
+    curl -sfL https://get.k3s.io | sh -
+
+    sudo cat /var/lib/rancher/k3s/server/node-token > /vagrant/worker-token.env
+    echo "alias k='kubectl'" >> $bashrc_file
     SHELL
   end
 
-  # Worker node (makSW)
   config.vm.define "makSW" do |makSW|
     makSW.vm.box = "debian/bookworm64"
     makSW.vm.network "private_network", ip: "192.168.56.111"
@@ -33,36 +33,20 @@ Vagrant.configure("2") do |config|
     
     makSW.vm.boot_timeout = 600
 
-    # Worker node provision (K3s Worker kurulumu)
     makSW.vm.provision "shell", inline: <<-SHELL
-      # kubectl kurulumu
-      #curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-      #curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-      #echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-      #sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      bashrc_file="/home/vagrant/.bashrc"
+      apt update
+      apt install curl -y
+      apt install net-tools -y
 
-      # Master node IP adresini ve token'ı almak
       MASTER_IP="192.168.56.110"
-      export K3S_TOKEN=$(cat /vagrant/sync/master_node)
+      export K3S_TOKEN=$(cat /vagrant/worker-token.env)
 
-      # info log $K3S_TOKEN
       echo $K3S_TOKEN
 
       export K3S_URL="https://$MASTER_IP:6443"
-      # K3s Worker node kurulumu
       curl -sfL https://get.k3s.io | sh -
-
-      # Kubeconfig dosyasını al ve worker node'a yerleştir
-     # mkdir -p ~/.kube
-     # cp /vagrant/sync/kubeconfig ~/.kube/config
-
-      # Dosya izinlerini ayarla
-      # chmod 600 ~/.kube/config
-      # sudo mkdir -p /etc/rancher/k3s
-      # sudo chmod 644 /etc/rancher/k3s/k3s.yaml
-
-      # Çıkış
-      #exit 0
+      bash -c "echo 'alias k=kubectl' >> $bashrc_file"
     SHELL
   end
 end
