@@ -1,5 +1,4 @@
 
-# Minimal settings
 global:
   edition: "ce"
   externalUrl: http://local.gitlab.com
@@ -10,13 +9,11 @@ global:
     domain: local.gitlab.com
     externalIP: 192.168.56.110
     https: false
-  # Disable Rails bootsnap cache (temporary)
   rails:
     bootsnap:
       enabled: false
   shell:
     # Configure the clone link in the UI to include the high-numbered NodePort
-    # value from below (`gitlab.gitlab-shell.service.nodePort`)
     port: 32022
 # Don't use certmanager, we'll self-sign
 certmanager:

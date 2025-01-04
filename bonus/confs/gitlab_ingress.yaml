@@ -4,9 +4,8 @@ metadata:
   name: gitlab-ingress
   namespace: gitlab
   annotations:
-    kubernetes.io/ingress.class: "nginx" 
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: "nginx"
   rules:
     - host: local.gitlab.com
       http:
@@ -17,4 +16,4 @@ spec:
               service:
                 name: gitlab-webservice-default
                 port:
-                  number: 8083
+                  number: 8181
