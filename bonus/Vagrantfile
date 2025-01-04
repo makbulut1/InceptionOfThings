@@ -8,29 +8,8 @@ Vagrant.configure("2") do |config|
       vb.memory = "4096"
     end
     makS.vm.provision "shell", inline: <<-SHELL
-    bashrc_file="/home/vagrant/.bashrc"
-    apt-get update -y
-    apt-get install curl -y
-    apt-get install net-tools -y
-
-    export INSTALL_K3S_EXEC="--write-kubeconfig-mode 644 --bind-address=192.168.56.110 --advertise-address=192.168.56.110 --node-ip=192.168.56.110"
-
-    curl -sfL https://get.k3s.io | sh -
-
-    sudo cat /var/lib/rancher/k3s/server/node-token > /vagrant/worker-token.env
-    echo "alias k='kubectl'" >> $bashrc_file
-
-    while ! kubectl get nodes; do
-      sleep 5
-    done
-    echo "K3s is ready"
-
-    echo "Deploying Nginx"
-    kubectl apply -f /vagrant/confs/app-one.yaml
-    kubectl apply -f /vagrant/confs/app-two.yaml
-    kubectl apply -f /vagrant/confs/app-three.yaml
-    kubectl apply -f /vagrant/confs/ingress.yaml
-    echo "Nginx deployed"
+    sh /vagrant/scripts/install_gitlab.sh
+    sh /vagrant/scripts/init.sh
     SHELL
   end
  end
