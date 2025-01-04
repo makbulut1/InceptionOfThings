@@ -19,4 +19,4 @@ echo "Gitlab Pass: "
 kubectl get secret gitlab-gitlab-initial-root-password -n gitlab -o jsonpath="{.data.password}" | base64 --decode
 echo
 
-kubectl apply -f ../confs/gitlab-ingress.yaml
+kubectl apply -f ../confs/gitlab_ingress.yaml
