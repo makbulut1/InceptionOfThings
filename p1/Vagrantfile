@@ -1,28 +1,28 @@
 Vagrant.configure("2") do |config|
-  config.vm.define "makS" do |makS|
-    makS.vm.box = "debian/bookworm64"
-    makS.vm.network "private_network", ip: "192.168.56.110"
+  config.vm.define "makbulutS" do |makbulutS|
+    makbulutS.vm.box = "debian/bookworm64"
+    makbulutS.vm.network "private_network", ip: "192.168.56.113"
 
-    makS.vm.provider "virtualbox" do |vb|
+    makbulutS.vm.provider "virtualbox" do |vb|
       vb.cpus = 1
       vb.memory = "1024"
     end
-    makS.vm.provision "shell", inline: <<-SHELL
+    makbulutS.vm.provision "shell", inline: <<-SHELL
       bash /vagrant/scripts/init.sh
       bash /vagrant/scripts/server.sh
     SHELL
   end
 
-  config.vm.define "makSW" do |makSW|
-    makSW.vm.box = "debian/bookworm64"
-    makSW.vm.network "private_network", ip: "192.168.56.111"
+  config.vm.define "makbulutSW" do |makbulutSW|
+    makbulutSW.vm.box = "debian/bookworm64"
+    makbulutSW.vm.network "private_network", ip: "192.168.56.114"
 
-    makSW.vm.provider "virtualbox" do |vb|
+    makbulutSW.vm.provider "virtualbox" do |vb|
       vb.cpus = 1
       vb.memory = "1024"
     end
 
-    makSW.vm.provision "shell", inline: <<-SHELL
+    makbulutSW.vm.provision "shell", inline: <<-SHELL
       bash /vagrant/scripts/init.sh
       bash /vagrant/scripts/agent.sh    
     SHELL

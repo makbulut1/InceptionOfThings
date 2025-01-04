@@ -1,13 +1,13 @@
 Vagrant.configure("2") do |config|
-  config.vm.define "makS" do |makS|
-    makS.vm.box = "debian/bookworm64"
-    makS.vm.network "private_network", ip: "192.168.56.110"
+  config.vm.define "makbulutS" do |makbulutS|
+    makbulutS.vm.box = "debian/bookworm64"
+    makbulutS.vm.network "private_network", ip: "192.168.56.110"
 
-    makS.vm.provider "virtualbox" do |vb|
+    makbulutS.vm.provider "virtualbox" do |vb|
       vb.cpus = 1
       vb.memory = "1024"
     end
-    makS.vm.provision "shell", inline: <<-SHELL
+    makbulutS.vm.provision "shell", inline: <<-SHELL
       bash /vagrant/scripts/init.sh
       bash /vagrant/scripts/agent.sh
       bash /vagrant/scripts/kube-yamls.sh

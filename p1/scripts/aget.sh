@@ -1,5 +1,5 @@
       MASTER_IP="192.168.56.110"
-      export K3S_TOKEN=$(cat /vagrant/worker-token.env)
+      export K3S_TOKEN=$(cat /vagrant/confs/worker-token.env)
 
       echo $K3S_TOKEN
 
