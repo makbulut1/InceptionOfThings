@@ -1,0 +1,48 @@
+
+global:
+  edition: "ce"
+  externalUrl: http://localhost.gitlab
+  ingress:
+    configureCertmanager: false
+    class: "nginx"
+  hosts:
+    domain: localhost.gitlab
+    externalIP: 192.168.56.110
+    externalURL: "http://localhost.gitlab"
+    https: false
+  rails:
+    bootsnap:
+      enabled: false
+  shell:
+    port: 32022
+certmanager:
+  install: false
+nginx-ingress:
+  enabled: false
+prometheus:
+  install: false
+gitlab-runner:
+  install: false
+gitlab:
+  https: false
+  webservice:
+    minReplicas: 1
+    maxReplicas: 1
+    servicePort: 8181
+    service:
+      type: NodePort
+      port: 8080
+      nodePort: 30080
+  sidekiq:
+    minReplicas: 1
+    maxReplicas: 1
+  gitlab-shell:
+    minReplicas: 1
+    maxReplicas: 1
+    service:
+      type: NodePort
+      nodePort: 32022
+registry:
+  hpa:
+    minReplicas: 1
+    maxReplicas: 1

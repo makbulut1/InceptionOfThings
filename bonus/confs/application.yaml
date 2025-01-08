@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/makbulut1/InceptionOfThings
+    repoURL: https://github.com/makbulutbulut1/InceptionOfThings
     targetRevision: HEAD
     path: bonus/confs/dev
   destination:

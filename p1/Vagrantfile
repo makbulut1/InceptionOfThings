@@ -1,52 +1,30 @@
 Vagrant.configure("2") do |config|
-  config.vm.define "makS" do |makS|
-    makS.vm.box = "debian/bookworm64"
-    makS.vm.network "private_network", ip: "192.168.56.110"
+  config.vm.define "makbulutS" do |makbulutS|
+    makbulutS.vm.box = "debian/bookworm64"
+    makbulutS.vm.network "private_network", ip: "192.168.56.113"
 
-    makS.vm.provider "virtualbox" do |vb|
+    makbulutS.vm.provider "virtualbox" do |vb|
       vb.cpus = 1
       vb.memory = "1024"
     end
-    makS.vm.provision "shell", inline: <<-SHELL
-    bashrc_file="/home/vagrant/.bashrc"
-    apt update
-    apt install curl -y
-    apt install net-tools -y
-
-    export INSTALL_K3S_EXEC="--write-kubeconfig-mode 644 --bind-address=192.168.56.110 --advertise-address=192.168.56.110 --node-ip=192.168.56.110"
-
-    curl -sfL https://get.k3s.io | sh -
-
-    sudo cat /var/lib/rancher/k3s/server/node-token > /vagrant/worker-token.env
-    echo "alias k='kubectl'" >> $bashrc_file
+    makbulutS.vm.provision "shell", inline: <<-SHELL
+      bash /vagrant/scripts/init.sh
+      bash /vagrant/scripts/server.sh
     SHELL
   end
 
-  config.vm.define "makSW" do |makSW|
-    makSW.vm.box = "debian/bookworm64"
-    makSW.vm.network "private_network", ip: "192.168.56.111"
+  config.vm.define "makbulutSW" do |makbulutSW|
+    makbulutSW.vm.box = "debian/bookworm64"
+    makbulutSW.vm.network "private_network", ip: "192.168.56.114"
 
-    makSW.vm.provider "virtualbox" do |vb|
+    makbulutSW.vm.provider "virtualbox" do |vb|
       vb.cpus = 1
       vb.memory = "1024"
     end
-    
-    makSW.vm.boot_timeout = 600
 
-    makSW.vm.provision "shell", inline: <<-SHELL
-      bashrc_file="/home/vagrant/.bashrc"
-      apt update
-      apt install curl -y
-      apt install net-tools -y
-
-      MASTER_IP="192.168.56.110"
-      export K3S_TOKEN=$(cat /vagrant/worker-token.env)
-
-      echo $K3S_TOKEN
-
-      export K3S_URL="https://$MASTER_IP:6443"
-      curl -sfL https://get.k3s.io | sh -
-      bash -c "echo 'alias k=kubectl' >> $bashrc_file"
+    makbulutSW.vm.provision "shell", inline: <<-SHELL
+      bash /vagrant/scripts/init.sh
+      bash /vagrant/scripts/agent.sh    
     SHELL
   end
 end
