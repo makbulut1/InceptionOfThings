@@ -1,13 +1,14 @@
 
 global:
   edition: "ce"
-  externalUrl: http://local.gitlab.com
+  externalUrl: http://localhost.gitlab
   ingress:
     configureCertmanager: false
     class: "nginx"
   hosts:
-    domain: local.gitlab.com
+    domain: localhost.gitlab
     externalIP: 192.168.56.110
+    externalURL: "http://localhost.gitlab"
     https: false
   rails:
     bootsnap:
@@ -28,6 +29,10 @@ gitlab:
     minReplicas: 1
     maxReplicas: 1
     servicePort: 8181
+    service:
+      type: NodePort
+      port: 8080
+      nodePort: 30080
   sidekiq:
     minReplicas: 1
     maxReplicas: 1
