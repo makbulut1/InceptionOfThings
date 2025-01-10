@@ -4,8 +4,8 @@ Vagrant.configure("2") do |config|
     makbulutS.vm.network "private_network", ip: "192.168.56.110"
 
     makbulutS.vm.provider "virtualbox" do |vb|
-      vb.cpus = 2
-      vb.memory = "4096"
+      vb.cpus = 4
+      vb.memory = "8096"
     end
     makbulutS.vm.provision "shell", inline: <<-SHELL
       bash /vagrant/scripts/init.sh

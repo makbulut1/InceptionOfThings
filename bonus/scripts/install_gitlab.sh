@@ -7,7 +7,7 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bas
 helm repo add gitlab https://charts.gitlab.io/
 helm repo update
 
-helm install gitlab gitlab/gitlab -f ../confs/values.yaml -n gitlab
+helm install gitlab gitlab/gitlab -f /vagrant/confs/values.yaml -n gitlab
 
 kubectl wait --for=condition=ready pod --all -n gitlab --timeout=600s
 
@@ -17,6 +17,6 @@ echo
 
 kubectl delete ingress gitlab-webservice-default -n gitlab
 
-kubectl apply -f ../confs/gitlab_ingress.yaml
+kubectl apply -f /vagrant/confs/gitlab_ingress.yaml
 
 # kubectl port-forward svc/gitlab-webservice-default -n gitlab 8181:8181 --address 0.0.0.0
