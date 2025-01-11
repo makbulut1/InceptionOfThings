@@ -6,3 +6,4 @@ sudo apt update
 sudo apt install -y curl
 sudo apt install -y net-tools
 echo "alias k=kubectl" > $bashrc_file
+mkdir -p /vagrant/confs
