@@ -1,31 +1,34 @@
-Vagrant.configure("2") do |config|
-  config.vm.define "makbulutS" do |makbulutS|
-    makbulutS.vm.box = "debian/bookworm64"
-    makbulutS.vm.network "private_network", ip: "192.168.56.113"
 
-    makbulutS.vm.provider "virtualbox" do |vb|
-      vb.cpus = 1
-      vb.memory = "1024"
+Vagrant.configure("2") do |config|
+  BOX_NAME = "debian/bookworm64" # Debian 12
+  VM_MEMORY = 1024
+  VM_CPUS = 1
+  config.vm.define "makbulutS" do |server|
+    server.vm.box = BOX_NAME
+    server.vm.hostname = "makbulutS"
+    server.vm.network "private_network", ip: "192.168.56.110"
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = VM_MEMORY
+      vb.cpus = VM_CPUS
     end
-    makbulutS.vm.provision "shell", inline: <<-SHELL
-      bash /vagrant/scripts/init.sh
+    server.vm.provision "shell", inline: <<-SHELL
+      bash /vagrant/scripts/init-vm.sh
       bash /vagrant/scripts/server.sh
     SHELL
   end
 
-  config.vm.define "makbulutSW" do |makbulutSW|
-    makbulutSW.vm.box = "debian/bookworm64"
-    makbulutSW.vm.network "private_network", ip: "192.168.56.114"
-
-    makbulutSW.vm.provider "virtualbox" do |vb|
-      vb.cpus = 1
-      vb.memory = "1024"
+  config.vm.define "makbulutSW" do |server_worker|
+    server_worker.vm.box = BOX_NAME
+    server_worker.vm.hostname = "makbulutSW"
+    server_worker.vm.network "private_network", ip: "192.168.56.111"
+    server_worker.vm.provider "virtualbox" do |vb|
+      vb.memory = VM_MEMORY
+      vb.cpus = VM_CPUS
     end
-
-    makbulutSW.vm.provision "shell", inline: <<-SHELL
-      bash /vagrant/scripts/init.sh
-      bash /vagrant/scripts/agent.sh    
+    server_worker.vm.provision "shell", inline: <<-SHELL
+      bash /vagrant/scripts/init-vm.sh
+      bash /vagrant/scripts/agent.sh
     SHELL
   end
 end
-
+  

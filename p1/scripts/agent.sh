@@ -1,8 +1,8 @@
-MASTER_IP="192.168.56.110"
-export K3S_TOKEN=$(cat /vagrant/confs/worker-token.env)
+#!/bin/bash
 
-echo $K3S_TOKEN
+export K3S_TOKEN=$(cat /vagrant/agent-token.env)
+export K3S_URL="https://192.168.56.110:6443"
+export INSTALL_K3S_EXEC="--node-ip=192.168.56.111"
 
-export K3S_URL="https://$MASTER_IP:6443"
 curl -sfL https://get.k3s.io | sh -
-rm -rf /vagrant/confs
+rm -f /vagrant/agent-token.env
