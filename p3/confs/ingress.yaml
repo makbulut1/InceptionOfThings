@@ -4,19 +4,20 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
+  namespace: argocd
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: app1.com
+  - host: localhost.argocd
     http:
-      paths:
+      paths: 
         - path: /
           pathType: Prefix
           backend:
-            service:
-              name: app-one
+            service: 
+              name: argocd-server
               port:
-                number: 80
+                number: 443
 
 
