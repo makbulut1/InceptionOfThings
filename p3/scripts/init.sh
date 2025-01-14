@@ -18,6 +18,9 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" --output /tmp/kubectl
 sudo install -o root -g root -m 0755 /tmp/kubectl /usr/local/bin/kubectl
 
+export bashrc_file=$HOME/.bashrc
+echo "alias k=kubectl" >> $bashrc_file
+
 wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 
 sudo k3d cluster create cluster
@@ -40,4 +43,5 @@ echo -n "pass: "
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 --decode
 echo
 
-kubectl port-forward svc/argocd-server -n argocd 8080:443 --address 0.0.0.0 &
+kubectl apply -f ../confs/ingress.yaml
+#kubectl port-forward svc/argocd-server -n argocd 8080:443 --address 0.0.0.0 &
