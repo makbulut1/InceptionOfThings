@@ -20,7 +20,7 @@
 
  wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 
- sudo k3d cluster create cluster
+ sudo k3d cluster create cluster --network host
 
  mkdir ~/.kube
  sudo k3d kubeconfig get cluster > ~/.kube/config
@@ -34,7 +34,10 @@ sleep 10
 
 kubectl wait --for=condition=ready pod --all -n argocd --timeout=300s
 
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
+
 kubectl apply -f /vagrant/confs/application.yaml
+kubectl apply -f /vagrant/confs/argocd-ingress.yaml
 
 echo -n "pass: "
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 --decode
