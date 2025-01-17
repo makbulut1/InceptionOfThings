@@ -15,7 +15,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-    - host: argocd.ln
+    - host: argocd.local
       http:
         paths:
           - path: /

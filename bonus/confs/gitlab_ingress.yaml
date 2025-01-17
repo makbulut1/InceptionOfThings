@@ -5,7 +5,7 @@ metadata:
   namespace: gitlab
 spec:
   rules:
-  - host: gitlab.ln
+  - host: gitlab.local
     http:
       paths:
       - path: /
