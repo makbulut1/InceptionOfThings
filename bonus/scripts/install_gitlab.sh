@@ -18,5 +18,3 @@ echo
 kubectl delete ingress gitlab-webservice-default -n gitlab
 
 kubectl apply -f /vagrant/confs/gitlab_ingress.yaml
-
-# kubectl port-forward svc/gitlab-webservice-default -n gitlab 8181:8181 --address 0.0.0.0

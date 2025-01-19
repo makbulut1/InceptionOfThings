@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
  sudo apt-get update -y
  sudo apt-get install ca-certificates curl -y
  sudo install -m 0755 -d /etc/apt/keyrings
@@ -34,8 +33,6 @@ sleep 10
 
 kubectl wait --for=condition=ready pod --all -n argocd --timeout=300s
 
-#kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
-
 kubectl apply -f /vagrant/confs/application.yaml
 kubectl apply -f /vagrant/confs/argocd-configmap.yaml
 kubectl rollout restart deployment argocd-server -n argocd
@@ -44,6 +41,4 @@ kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server -
 echo -n "pass: "
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 --decode
 echo
-
-#kubectl port-forward svc/argocd-server -n argocd 8080:443 --address 0.0.0.0
 
